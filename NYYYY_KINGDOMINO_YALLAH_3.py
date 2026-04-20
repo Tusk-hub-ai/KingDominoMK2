@@ -16,10 +16,10 @@ MAX_PER_TILE = 4
 
 # Centre-crop ratio for SIFT — keeps the inner 70 % of the tile,
 # removing ~15 % on each side where crowns typically sit.
-SIFT_CROP_RATIO = 0.70
+SIFT_CROP_RATIO = 0.50
 
 # Number of visual words (k-means clusters) per tile-type vocabulary
-VOCAB_SIZE = 16
+VOCAB_SIZE = 24
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -254,8 +254,10 @@ def extract_features(bgr_img, vocabs):
     # ── Scalar HSV statistics (full tile) ─────────────────────────────
     val = hsv_full[:, :, 2]
     dark_ratio = np.array([(val < 40).sum() / TILE_SIZE**2], dtype=np.float32)
-    bright_ratio = np.array([(val > 180).sum() / TILE_SIZE**2], dtype=np.float32)
-    median_sat = np.array([np.median(hsv_full[:, :, 1]) / 255.0], dtype=np.float32)
+    bright_ratio = np.array(
+        [(val > 180).sum() / TILE_SIZE**2], dtype=np.float32)
+    median_sat = np.array(
+        [np.median(hsv_full[:, :, 1]) / 255.0], dtype=np.float32)
     median_val = np.array([np.median(val) / 255.0], dtype=np.float32)
     v_std = np.array([val.std() / 255.0], dtype=np.float32)
 
